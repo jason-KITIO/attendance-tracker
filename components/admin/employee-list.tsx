@@ -140,7 +140,7 @@ export function EmployeeList() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl w-screen p-0 py-3">
           <DialogHeader>
             <DialogTitle>Attendance Details</DialogTitle>
             <DialogDescription>{selectedEmployee?.name}&apos;s attendance records</DialogDescription>
