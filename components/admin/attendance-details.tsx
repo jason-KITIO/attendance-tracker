@@ -86,7 +86,7 @@ export function AttendanceDetails({ employeeId }: AttendanceDetailsProps) {
   }
 
   return (
-    <div className="space-y-4 w-screen px-4">
+    <div className="lg:space-y-4 lg:w-full lg:px-0 sm:w-screen sm:px-4 overflow-auto">
       <div className="rounded-md border">
         <Table>
           <TableHeader>
