@@ -86,7 +86,7 @@ export function AttendanceDetails({ employeeId }: AttendanceDetailsProps) {
   }
 
   return (
-    <div className="lg:space-y-4 lg:w-full lg:px-0 sm:w-screen sm:px-4 overflow-auto">
+    <div className="lg:space-y-4 lg:w-full lg:px-0 sm:w-screen sm:px-2 overflow-auto max-h-[80vh] overflow-y-auto">
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -140,7 +140,7 @@ export function AttendanceDetails({ employeeId }: AttendanceDetailsProps) {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Daily Report</DialogTitle>
             <DialogDescription>

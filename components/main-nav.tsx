@@ -33,13 +33,13 @@ export function MainNav() {
           Admin
         </Link>
       )}
-      <Button
+      {/* <Button
         variant="ghost"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
         onClick={() => signOut({ callbackUrl: "/login" })}
       >
         Logout
-      </Button>
+      </Button> */}
     </div>
   )
 }
