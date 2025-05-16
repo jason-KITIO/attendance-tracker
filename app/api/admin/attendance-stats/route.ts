@@ -150,16 +150,56 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    // Calculate overtime statistics
+    const monthStart = startOfMonth(today)
+    const monthEnd = endOfMonth(today)
+
+    const overtimeByEmployee = []
+
+    for (const employee of employees) {
+      const attendanceRecords = await Attendance.find({
+        employee: employee._id,
+        checkOut: { $exists: true },
+        checkIn: {
+          $gte: monthStart,
+          $lte: monthEnd,
+        },
+      })
+
+      let regularOvertimeHours = 0
+      let weekendOvertimeHours = 0
+
+      for (const record of attendanceRecords) {
+        if (record.overtimeHours) {
+          if (record.isWeekendOvertime) {
+            weekendOvertimeHours += record.overtimeHours
+          } else {
+            regularOvertimeHours += record.overtimeHours
+          }
+        }
+      }
+
+      overtimeByEmployee.push({
+        name: employee.name,
+        regularHours: regularOvertimeHours,
+        weekendHours: weekendOvertimeHours,
+        totalHours: regularOvertimeHours + weekendOvertimeHours,
+      })
+    }
+
+    // Sort by total overtime hours
+    overtimeByEmployee.sort((a, b) => b.totalHours - a.totalHours)
+
     return NextResponse.json({
       latesByDay,
       latesByWeek,
       latesByMonth,
       attendanceDistribution,
       averageWorkHours,
+      overtimeByEmployee,
     })
   } catch (error) {
     console.error("Error fetching attendance stats:", error)
     return NextResponse.json({ message: "Something went wrong" }, { status: 500 })
   }
 }
-

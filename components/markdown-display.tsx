@@ -1,0 +1,16 @@
+"use client"
+import ReactMarkdown from "react-markdown"
+import { cn } from "@/lib/utils"
+
+interface MarkdownDisplayProps {
+  content: string
+  className?: string
+}
+
+export function MarkdownDisplay({ content, className }: MarkdownDisplayProps) {
+  return (
+    <div className={cn("prose prose-sm dark:prose-invert max-w-none", className)}>
+      <ReactMarkdown>{content}</ReactMarkdown>
+    </div>
+  )
+}

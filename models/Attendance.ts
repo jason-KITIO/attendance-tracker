@@ -7,6 +7,13 @@ export interface IAttendance extends Document {
   isLate: boolean
   makeupTime?: "evening" | "saturday" | "sunday"
   dailyReport?: string
+  overtimeHours?: number
+  isWeekendOvertime?: boolean
+  attachments?: Array<{
+    name: string
+    url: string
+    type: string
+  }>
   createdAt: Date
   updatedAt: Date
 }
@@ -19,9 +26,17 @@ const AttendanceSchema: Schema = new Schema(
     isLate: { type: Boolean, default: false },
     makeupTime: { type: String, enum: ["evening", "saturday", "sunday"] },
     dailyReport: { type: String },
+    overtimeHours: { type: Number, default: 0 },
+    isWeekendOvertime: { type: Boolean, default: false },
+    attachments: [
+      {
+        name: { type: String },
+        url: { type: String },
+        type: { type: String },
+      },
+    ],
   },
   { timestamps: true },
 )
 
 export default mongoose.models.Attendance || mongoose.model<IAttendance>("Attendance", AttendanceSchema)
-

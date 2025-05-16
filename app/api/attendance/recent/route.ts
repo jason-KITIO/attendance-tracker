@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       employee: session.user.id,
     })
       .sort({ checkIn: -1 })
-      .limit(7)
+      // .limit(7)
 
     return NextResponse.json({ attendance })
   } catch (error) {

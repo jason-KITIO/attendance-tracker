@@ -18,6 +18,7 @@ import {
   Cell,
   Legend,
 } from "recharts"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 export function AttendanceStats() {
   const { toast } = useToast()
@@ -28,6 +29,7 @@ export function AttendanceStats() {
     latesByMonth: [],
     attendanceDistribution: [],
     averageWorkHours: [],
+    overtimeByEmployee: [],
   })
   const [timeRange, setTimeRange] = useState("day")
 
@@ -165,7 +167,43 @@ export function AttendanceStats() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Overtime Hours (Current Month)</CardTitle>
+          <CardDescription>Regular and weekend overtime hours by employee</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Employee</TableHead>
+                <TableHead>Regular Hours</TableHead>
+                <TableHead>Weekend Hours</TableHead>
+                <TableHead>Total Hours</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {stats.overtimeByEmployee &&
+                stats.overtimeByEmployee.map((employee: any, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{employee.name}</TableCell>
+                    <TableCell>{employee.regularHours.toFixed(1)}</TableCell>
+                    <TableCell>{employee.weekendHours.toFixed(1)}</TableCell>
+                    <TableCell className="font-bold">{employee.totalHours.toFixed(1)}</TableCell>
+                  </TableRow>
+                ))}
+              {(!stats.overtimeByEmployee || stats.overtimeByEmployee.length === 0) && (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center">
+                    No overtime data available
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
