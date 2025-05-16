@@ -13,6 +13,7 @@ export interface IAttendance extends Document {
     name: string
     url: string
     type: string
+    publicId?: string
   }>
   createdAt: Date
   updatedAt: Date
@@ -33,6 +34,7 @@ const AttendanceSchema: Schema = new Schema(
         name: { type: String },
         url: { type: String },
         type: { type: String },
+        publicId: { type: String },
       },
     ],
   },

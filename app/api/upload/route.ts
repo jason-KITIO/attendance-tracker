@@ -1,9 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { writeFile } from "fs/promises"
-import { join } from "path"
-import { v4 as uuidv4 } from "uuid"
+import { uploadToCloudinary } from "@/lib/cloudinary"
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,26 +24,20 @@ export async function POST(req: NextRequest) {
       const bytes = await file.arrayBuffer()
       const buffer = Buffer.from(bytes)
 
-      // Generate unique filename
-      const uniqueId = uuidv4()
-      const originalName = file.name
-      const extension = originalName.split(".").pop() || ""
-      const fileName = `${uniqueId}.${extension}`
+      // Déterminer le type de ressource pour Cloudinary
+      const resourceType = file.type.startsWith("image/") ? "image" : "raw"
 
-      // Define upload path - in a real app, use a cloud storage service
-      const uploadDir = join(process.cwd(), "public", "uploads")
-      const filePath = join(uploadDir, fileName)
-
-      // Ensure directory exists
-      await writeFile(filePath, buffer)
-
-      // Return the URL to the uploaded file
-      const fileUrl = `/uploads/${fileName}`
+      // Télécharger vers Cloudinary
+      const result = await uploadToCloudinary(buffer, {
+        folder: `attendance-tracker/${session.user.id}`,
+        resource_type: resourceType,
+      })
 
       uploadResults.push({
-        name: originalName,
-        url: fileUrl,
+        name: file.name,
+        url: result.secure_url,
         type: file.type,
+        publicId: result.public_id,
       })
     }
 

@@ -41,6 +41,7 @@
     "autoprefixer": "^10.4.20",
     "bcryptjs": "latest",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.6.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "date-fns": "latest",
@@ -50,6 +51,7 @@
     "mongoose": "latest",
     "next": "15.2.4",
     "next-auth": "latest",
+    "next-cloudinary": "^6.16.0",
     "next-themes": "^0.4.4",
     "nodemailer": "latest",
     "react": "^19",
@@ -62,8 +64,8 @@
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.6",
     "uuid": "^9.0.1",
+    "vaul": "^0.9.6",
     "zod": "^3.24.1"
   },
   "devDependencies": {

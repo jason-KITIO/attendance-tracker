@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useRef } from "react"
-import { Bold, Italic, List, ListOrdered, ImageIcon, Link, Code, Heading1, Heading2, FileInput } from "lucide-react"
+import { Bold, Italic, List, ListOrdered, ImageIcon, Link, Code, Heading1, Heading2, FileIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
@@ -11,7 +11,14 @@ import { useToast } from "@/hooks/use-toast"
 interface MarkdownEditorProps {
   value: string
   onChange: (value: string) => void
-  onAttachmentUpload?: (files: File[]) => Promise<string[]>
+  onAttachmentUpload?: (files: File[]) => Promise<
+    Array<{
+      name: string
+      url: string
+      type: string
+      publicId?: string
+    }>
+  >
 }
 
 export function MarkdownEditor({ value, onChange, onAttachmentUpload }: MarkdownEditorProps) {
@@ -70,23 +77,27 @@ export function MarkdownEditor({ value, onChange, onAttachmentUpload }: Markdown
     setIsUploading(true)
     try {
       const fileArray = Array.from(files)
-      const urls = await onAttachmentUpload(fileArray)
+      const uploadedFiles = await onAttachmentUpload(fileArray)
 
-      urls.forEach((url) => {
-        const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(url)
+      uploadedFiles.forEach((file) => {
+        const isImage = file.type.startsWith("image/")
         if (isImage) {
-          insertText(`![Image](${url})`)
+          insertText(`![${file.name}](${file.url})`)
         } else {
-          const fileName = url.split("/").pop() || "fichier"
-          insertText(`[${fileName}](${url})`)
+          insertText(`[${file.name}](${file.url})`)
         }
       })
-    } catch (error) {
+
       toast({
-        title: "Erreur",
-        description: "Échec du téléchargement du fichier",
-        variant: "destructive",
+        title: "Téléchargement réussi",
+        description: `${uploadedFiles.length} fichier(s) téléchargé(s)`,
       })
+    } catch (error) {
+      // toast({
+      //   title: "Erreur",
+      //   description: "Échec du téléchargement du fichier",
+      //   variant: "destructive",
+      // })
     } finally {
       setIsUploading(false)
       if (fileInputRef.current) {
@@ -202,8 +213,8 @@ export function MarkdownEditor({ value, onChange, onAttachmentUpload }: Markdown
                 onClick={handleImageUpload}
                 disabled={isUploading || !onAttachmentUpload}
               >
-                <FileInput className="h-4 w-4" />
-                <span className="sr-only">file-input</span>
+                <FileIcon className="h-4 w-4" />
+                <span className="sr-only">Pièce jointe</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Ajouter une pièce jointe</TooltipContent>
