@@ -25,12 +25,14 @@ Ce projet est une application web de suivi de présence des employés, permettan
 ## Installation
 
 1. **Cloner le dépôt**
+
    ```sh
    git clone <repo-url>
    cd attendance-tracker-main
    ```
 
 2. **Installer les dépendances**
+
    ```sh
    pnpm install
    ```
@@ -38,6 +40,7 @@ Ce projet est une application web de suivi de présence des employés, permettan
 3. **Configurer les variables d'environnement**
 
    Crée un fichier `.env.local` à la racine avec les variables nécessaires :
+
    ```
    MONGODB_URI=...
    NEXTAUTH_SECRET=...
@@ -47,6 +50,7 @@ Ce projet est une application web de suivi de présence des employés, permettan
    ```
 
 4. **Lancer le projet en développement**
+
    ```sh
    pnpm dev
    ```
